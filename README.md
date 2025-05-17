@@ -8,4 +8,5 @@ all (or mostly) done in my Twitch live-programming stream: <https://www.twitch.t
 - Problem 1: "Compass calibration"
   - Part 1
     - We used this as an opportunity to implement our own iterator adaptor in Rust.
+    - [Solution file: `problem_1_part_1.rs`](src/bin/problem_1_part_1.rs)
     - [Video of stream on YouTube](https://youtu.be/IyqEp3_0rpI)
