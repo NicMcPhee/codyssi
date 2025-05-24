@@ -1,12 +1,12 @@
-use itertools::Itertools;
+use codyssi::nic_er_tools::NicErTools;
 
 fn main() {
     let input = include_str!("../inputs/problem_2.txt");
-    let median_price = median_price(input).unwrap();
-    println!("The price for a median-quality room was {median_price}.");
+    let median_price = even_quality_prices(input).unwrap();
+    println!("The price for the even quality rooms was {median_price}.");
 }
 
-fn median_price(input: &str) -> Option<u64> {
+fn even_quality_prices(input: &str) -> Option<u64> {
     let mut lines = input.lines();
 
     // The parameters will be the values corresponding to the
@@ -27,31 +27,33 @@ fn median_price(input: &str) -> Option<u64> {
     // Drop the blank line
     lines.next();
 
-    let sorted_qualities = lines
+    // TODO: Bring in `.is_even()`
+
+    let sum_of_even_qualities: u64 = lines
         .map(|s| s.parse::<u64>().ok())
-        .sorted()
-        .collect::<Option<Vec<_>>>()?;
+        .process_options(|i| i.filter(|q| q % 2 == 0).sum())?;
 
-    let middle = sorted_qualities.get(sorted_qualities.len() / 2)?;
-
-    Some(parameters[0] + parameters[1] * (middle.pow(u32::try_from(parameters[2]).ok()?)))
+    Some(
+        parameters[0]
+            + parameters[1] * (sum_of_even_qualities.pow(u32::try_from(parameters[2]).ok()?)),
+    )
 }
 
 #[cfg(test)]
 mod tests {
-    use super::median_price;
+    use super::even_quality_prices;
 
     #[test]
     fn test_input() {
         let input = include_str!("../inputs/problem_2_test.txt");
-        let median_price = median_price(input).unwrap();
-        assert_eq!(median_price, 9_130_674_516_975);
+        let median_price = even_quality_prices(input).unwrap();
+        assert_eq!(median_price, 1_000_986_169_836_015);
     }
 
     #[test]
     fn actual_input() {
         let input = include_str!("../inputs/problem_2.txt");
-        let median_price = median_price(input).unwrap();
-        assert_eq!(median_price, 9_563_387_078_987);
+        let median_price = even_quality_prices(input).unwrap();
+        assert_eq!(median_price, 1_653_957_213_161_029_994);
     }
 }
