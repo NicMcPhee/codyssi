@@ -1,3 +1,5 @@
+use std::iter::FusedIterator;
+
 // To process an iterator of `Option`s we'll need to have
 // the iterator that provides those `Option` values, and
 // mutable access to a boolean that keeps track of whether
@@ -69,5 +71,44 @@ where
     }
 }
 
-// TODO: Implement `DoubleEndedIterator`
-// TODO: Implement `FusedIterator`
+// Implement `Iterator` for our `ProcessOptions` structure. This
+// mostly just passes the work on to the `internal_iterator`, along
+// with a bunch of "wrapper" logic to keep track of whether we've
+// encountered a `None` value.
+impl<OptionIterator, T> DoubleEndedIterator for ProcessOptions<'_, OptionIterator>
+where
+    OptionIterator: DoubleEndedIterator<Item = Option<T>>,
+{
+    fn next_back(&mut self) -> Option<Self::Item> {
+        if *self.found_none {
+            // If we've ever encountered a `None` value, we should
+            // always return `None` for subsequent requests.
+            None
+        } else {
+            // Get the next value from the internal iterator.
+            let n = self.internal_iterator.next_back();
+            match n {
+                // We've reached the end of the `internal_iterator`, so
+                // we return `None` to indicate that the iterator is
+                // finished.
+                None => None,
+                // The `internal_iterator` returned a `None` _value_
+                // (i.e., wrapped in a `Some`), which means that we
+                // want to record this in `found_none` and return
+                // `None`.
+                Some(None) => {
+                    *self.found_none = true;
+                    None
+                }
+                // The `internal_iterator` returned a `Some` value
+                // so we want to pass that along.
+                Some(Some(v)) => Some(v),
+            }
+        }
+    }
+}
+
+impl<OptionIterator, T> FusedIterator for ProcessOptions<'_, OptionIterator> where
+    OptionIterator: FusedIterator<Item = Option<T>>
+{
+}
