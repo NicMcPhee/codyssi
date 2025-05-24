@@ -1,7 +1,7 @@
 use std::iter::once;
 
 fn main() {
-    let input = include_str!("../inputs/problem_1_part_1.txt");
+    let input = include_str!("../inputs/problem_1.txt");
     let compass_offset = compute_offset(input).unwrap();
     println!("The final offset was {compass_offset}.");
 }
@@ -139,7 +139,7 @@ mod tests {
 
     #[test]
     fn test_input() {
-        let input = include_str!("../inputs/problem_1_part_1_test.txt");
+        let input = include_str!("../inputs/problem_1_test.txt");
         let compass_offset = compute_offset(input).unwrap();
         assert_eq!(compass_offset, 21);
     }
