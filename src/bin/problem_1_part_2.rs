@@ -15,7 +15,7 @@ fn compute_offset(input: &str) -> Option<i32> {
     // The `once()` call inserts a `+` at the start of the iterator over the sign symbols.
     // This allows us to not treat the first number in `lines` specially; we just
     // treat it as a positive value and add it in.
-    let sign_chars = once('+').chain(signs_string.chars());
+    let sign_chars = once('+').chain(signs_string.chars().rev());
     let signs = sign_chars.map(|c| match c {
         '+' => Some(1),
         '-' => Some(-1),
