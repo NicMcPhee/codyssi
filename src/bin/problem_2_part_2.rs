@@ -1,4 +1,5 @@
 use codyssi::nic_er_tools::NicErTools;
+use num::Integer;
 
 fn main() {
     let input = include_str!("../inputs/problem_2.txt");
@@ -27,11 +28,9 @@ fn even_quality_prices(input: &str) -> Option<u64> {
     // Drop the blank line
     lines.next();
 
-    // TODO: Bring in `.is_even()`
-
     let sum_of_even_qualities: u64 = lines
         .map(|s| s.parse::<u64>().ok())
-        .process_options(|i| i.filter(|q| q % 2 == 0).sum())?;
+        .process_options(|i| i.filter(Integer::is_even).sum())?;
 
     Some(
         parameters[0]
