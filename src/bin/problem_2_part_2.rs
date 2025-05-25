@@ -3,8 +3,8 @@ use num::Integer;
 
 fn main() {
     let input = include_str!("../inputs/problem_2.txt");
-    let median_price = even_quality_prices(input).unwrap();
-    println!("The price for the even quality rooms was {median_price}.");
+    let even_quality_prices = even_quality_prices(input).unwrap();
+    println!("The price for the even quality rooms was {even_quality_prices}.");
 }
 
 fn even_quality_prices(input: &str) -> Option<u64> {
@@ -45,14 +45,14 @@ mod tests {
     #[test]
     fn test_input() {
         let input = include_str!("../inputs/problem_2_test.txt");
-        let median_price = even_quality_prices(input).unwrap();
-        assert_eq!(median_price, 1_000_986_169_836_015);
+        let even_quality_prices = even_quality_prices(input).unwrap();
+        assert_eq!(even_quality_prices, 1_000_986_169_836_015);
     }
 
     #[test]
     fn actual_input() {
         let input = include_str!("../inputs/problem_2.txt");
-        let median_price = even_quality_prices(input).unwrap();
-        assert_eq!(median_price, 1_653_957_213_161_029_994);
+        let even_quality_prices = even_quality_prices(input).unwrap();
+        assert_eq!(even_quality_prices, 1_653_957_213_161_029_994);
     }
 }
