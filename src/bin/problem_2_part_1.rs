@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 fn main() {
     let input = include_str!("../inputs/problem_2.txt");
     let median_price = median_price(input).unwrap();
@@ -27,12 +25,12 @@ fn median_price(input: &str) -> Option<u64> {
     // Drop the blank line
     lines.next();
 
-    let sorted_qualities = lines
+    let mut qualities = lines
         .map(|s| s.parse::<u64>().ok())
-        .sorted()
         .collect::<Option<Vec<_>>>()?;
 
-    let middle = sorted_qualities.get(sorted_qualities.len() / 2)?;
+    let middle_position = qualities.len() / 2;
+    let (_, middle, _) = qualities.select_nth_unstable(middle_position);
 
     Some(parameters[0] + parameters[1] * (middle.pow(u32::try_from(parameters[2]).ok()?)))
 }
